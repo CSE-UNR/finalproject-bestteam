@@ -2,6 +2,7 @@
 
 #define MAX_SIZE 1000
 
+// Functions
 void loadNewImage(char *filename, char image[][MAX_SIZE], int *width, int *height);
 void displayImage(char image[][MAX_SIZE], int width, int height);
 void dimImage(char image[][MAX_SIZE], int width, int height);
@@ -16,6 +17,7 @@ int main() {
     char option;
 
     do {
+        // Displaying main menu
         printf("\nMenu:\n");
         printf("1. Load Image\n");
         printf("2. Display Image\n");
@@ -25,16 +27,16 @@ int main() {
         scanf(" %c", &option);
 
         switch (option) {
-            case '1': // Load Image
+            case '1': // Load 
                 printf("Enter the filename of the image: ");
                 scanf("%s", filename);
                 loadNewImage(filename, image, &width, &height);
                 break;
-            case '2': // Display Image
+            case '2': // Display
                 printf("\nDisplayed Image:\n");
                 displayImage(image, width, height);
                 break;
-            case '3': // Edit Image
+            case '3': // Edit
                 printf("\nEdit Options:\n");
                 printf("1. Dim\n");
                 printf("2. Brighten\n");
@@ -53,13 +55,13 @@ int main() {
                         cropImage(image, &width, &height);
                         break;
                     case '4':
-                        break; // Exit edit options
+                        break;
                     default:
                         printf("Invalid edit option.\n");
                         break;
                 }
                 break;
-            case '4': // Exit
+            case '4':
                 printf("Exiting program.\n");
                 break;
             default:
@@ -68,7 +70,6 @@ int main() {
         }
     } while (option != '4'); // Continue until the user chooses to exit
 
-    // Ask user if they want to save the edited image
     char saveOption;
     printf("Would you like to save the edited image? (y/n): ");
     scanf(" %c", &saveOption);
@@ -82,6 +83,7 @@ int main() {
     return 0;
 }
 
+// Function to load a new image from a file
 void loadNewImage(char *filename, char image[][MAX_SIZE], int *width, int *height) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
@@ -93,9 +95,11 @@ void loadNewImage(char *filename, char image[][MAX_SIZE], int *width, int *heigh
     *height = 0;
     char c;
 
+
     // Read characters until the end of file
+    // TA allowed me to use the fgetc/EOF. I learned the function in previous coding classes taken during high school. Was told to specify how I knew it in the notes section :)
     while ((c = fgetc(file)) != EOF && *height < MAX_SIZE) {
-        // Using EOF to take the height
+        // Height < MAX_SIZE = the loop doesn’t continue infinitely 
         if (c == '\n') {
             // Newline encountered, move to next row
             *width = 0;
@@ -104,11 +108,9 @@ void loadNewImage(char *filename, char image[][MAX_SIZE], int *width, int *heigh
             // Store character in image array
             image[*height][*width] = c;
             (*width)++;
-            printf("width: %d\n", *width);
-            //
+            printf("width: %d\n", *width); // For debugging, printing width
         }
     }
-
 
     printf("width: %d\n", *width);
     printf("height %d\n", *height);
@@ -117,6 +119,7 @@ void loadNewImage(char *filename, char image[][MAX_SIZE], int *width, int *heigh
     printf("Image loaded successfully.\n");
 }
 
+// Function to display the image
 void displayImage(char image[][MAX_SIZE], int width, int height) {
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
@@ -126,6 +129,7 @@ void displayImage(char image[][MAX_SIZE], int width, int height) {
     }
 }
 
+// Function to dim the image
 void dimImage(char image[][MAX_SIZE], int width, int height) {
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
@@ -151,6 +155,7 @@ void dimImage(char image[][MAX_SIZE], int width, int height) {
     printf("Image dimmed successfully.\n");
 }
 
+// Function to brighten the image
 void brightenImage(char image[][MAX_SIZE], int width, int height) {
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
@@ -176,6 +181,7 @@ void brightenImage(char image[][MAX_SIZE], int width, int height) {
     printf("Image brightened successfully.\n");
 }
 
+// Function to crop the image
 void cropImage(char image[][MAX_SIZE], int *width, int *height) {
     int startRow, startCol, numRows, numCols;
 
@@ -207,6 +213,7 @@ void cropImage(char image[][MAX_SIZE], int *width, int *height) {
     printf("Image cropped successfully.\n");
 }
 
+// Function to save the image to a file
 void saveImage(char image[][MAX_SIZE], int width, int height, char *filename) {
     char saveOption;
     printf("Do you want to save the edited image? (y/n): ");
